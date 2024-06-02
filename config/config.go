@@ -25,15 +25,16 @@ type ServerConfig struct {
 }
 
 type DatabaseConfig struct {
-	Host string
-	Port uint16
-	User string
-	Pass string
-	Name string
+	Host     string
+	Port     uint16
+	User     string
+	Password string
+	Name     string
+	SSLMode  string
 }
 
 func GetConfig() *Config {
-	var config *Config
+	var config Config
 
 	viper.SetConfigName("config")
 	viper.SetConfigType("toml")
@@ -47,5 +48,5 @@ func GetConfig() *Config {
 		log.Fatalf("Unable to decode into struct, %v", err)
 	}
 
-	return config
+	return &config
 }
