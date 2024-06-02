@@ -1,11 +1,24 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"fmt"
+	"github.com/dicapisar/13cc_manager/config"
+	"github.com/gofiber/fiber/v2"
+)
 
 func main() {
-	app := fiber.New()
 
-	err := app.Listen(":3000")
+	envConfig := config.GetConfig()
+
+	app := fiber.New(fiber.Config{
+		AppName:           envConfig.App.Name,
+		CaseSensitive:     envConfig.Server.CaseSensitive,
+		EnablePrintRoutes: envConfig.Server.EnamblePrintRoutes,
+	})
+
+	port := fmt.Sprintf(":%d", envConfig.Server.Port)
+
+	err := app.Listen(port)
 
 	if err != nil {
 		panic(err)
