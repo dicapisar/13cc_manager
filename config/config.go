@@ -19,9 +19,9 @@ type AppConfig struct {
 }
 
 type ServerConfig struct {
-	Port               uint16
-	CaseSensitive      bool
-	EnamblePrintRoutes bool
+	Port              uint16
+	CaseSensitive     bool
+	EnablePrintRoutes bool
 }
 
 type DatabaseConfig struct {

@@ -13,7 +13,7 @@ func main() {
 	app := fiber.New(fiber.Config{
 		AppName:           envConfig.App.Name,
 		CaseSensitive:     envConfig.Server.CaseSensitive,
-		EnablePrintRoutes: envConfig.Server.EnamblePrintRoutes,
+		EnablePrintRoutes: envConfig.Server.EnablePrintRoutes,
 	})
 
 	port := fmt.Sprintf(":%d", envConfig.Server.Port)
