@@ -34,7 +34,7 @@ func main() {
 	app.Static("/public", "./public").Name("static files")
 
 	// Adding handlers
-	err = handlers.AddingHandlers(app)
+	err = handlers.AddingHandlers(app, newDatabase.DB)
 	if err != nil {
 		panic(err)
 	}

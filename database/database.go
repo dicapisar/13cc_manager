@@ -15,7 +15,7 @@ type DatabaseImpl struct {
 	DB *gorm.DB
 }
 
-func NewDatabase(config *config.DatabaseConfig) (Database, error) {
+func NewDatabase(config *config.DatabaseConfig) (*DatabaseImpl, error) {
 	dns := fmt.Sprintf("user=%s password=%s dbname=%s host=%s port=%d sslmode=%s",
 		config.User, config.Password, config.Name, config.Host, config.Port, config.SSLMode)
 
@@ -37,9 +37,10 @@ func NewDatabase(config *config.DatabaseConfig) (Database, error) {
 }
 
 func autoMigrate(db *gorm.DB) error {
+
 	return db.AutoMigrate(
-		&models.User{},
 		&models.Rol{},
+		&models.User{},
 		&models.UserRol{},
 	)
 }

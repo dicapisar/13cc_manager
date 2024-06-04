@@ -9,6 +9,7 @@ type Config struct {
 	App      AppConfig
 	Server   ServerConfig
 	Database DatabaseConfig
+	Auth     AuthConfig
 }
 
 type AppConfig struct {
@@ -32,6 +33,10 @@ type DatabaseConfig struct {
 	Name        string
 	SSLMode     string
 	AutoMigrate bool
+}
+
+type AuthConfig struct {
+	Cost uint8
 }
 
 func GetConfig() *Config {

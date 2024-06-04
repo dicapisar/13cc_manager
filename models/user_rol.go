@@ -11,8 +11,6 @@ type UserRol struct {
 	Status      bool      `gorm:"not null"`
 	CreateDate  time.Time `gorm:"not null"`
 	UpdateDate  time.Time `gorm:"not null"`
-	CreatedBy   *User     `gorm:"foreignKey:CreatedByID"`
 	CreatedByID uint      `gorm:"not null"`
-	UpdatedBy   *User     `gorm:"foreignKey:UpdatedByID"`
 	UpdatedByID uint      `gorm:"not null"`
 }
