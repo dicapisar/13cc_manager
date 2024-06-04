@@ -5,6 +5,7 @@ import (
 	"github.com/dicapisar/13cc_manager/config"
 	"github.com/dicapisar/13cc_manager/database"
 	"github.com/dicapisar/13cc_manager/handlers"
+	"github.com/dicapisar/13cc_manager/middlewares"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -26,10 +27,19 @@ func main() {
 		EnablePrintRoutes: envConfig.Server.EnablePrintRoutes,
 	})
 
-	app.Get("/ping", handlers.PingHandler).Name("ping")
+	// Adding Middleware
+	middlewares.AddingMiddlewares(app)
+
+	// Adding Static Directory
+	app.Static("/public", "./public").Name("static files")
+
+	// Adding handlers
+	err = handlers.AddingHandlers(app)
+	if err != nil {
+		panic(err)
+	}
 
 	port := fmt.Sprintf(":%d", envConfig.Server.Port)
-
 	err = app.Listen(port)
 
 	if err != nil {
