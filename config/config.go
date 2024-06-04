@@ -25,12 +25,13 @@ type ServerConfig struct {
 }
 
 type DatabaseConfig struct {
-	Host     string
-	Port     uint16
-	User     string
-	Password string
-	Name     string
-	SSLMode  string
+	Host        string
+	Port        uint16
+	User        string
+	Password    string
+	Name        string
+	SSLMode     string
+	AutoMigrate bool
 }
 
 func GetConfig() *Config {

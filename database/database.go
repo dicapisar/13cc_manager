@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"github.com/dicapisar/13cc_manager/config"
+	"github.com/dicapisar/13cc_manager/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -24,7 +25,21 @@ func NewDatabase(config *config.DatabaseConfig) (Database, error) {
 		return nil, err
 	}
 
+	if config.AutoMigrate {
+		if err := autoMigrate(db); err != nil {
+			return nil, err
+		}
+	}
+
 	return &DatabaseImpl{
 		DB: db,
 	}, nil
+}
+
+func autoMigrate(db *gorm.DB) error {
+	return db.AutoMigrate(
+		&models.User{},
+		&models.Rol{},
+		&models.UserRol{},
+	)
 }
