@@ -7,6 +7,7 @@ import (
 
 type UserRepository interface {
 	SaveNewUser(user *models.User) (*models.User, error)
+	GetUserByEmail(email string) (*models.User, error)
 }
 
 type UserRepositoryImpl struct {
@@ -22,4 +23,16 @@ func (u *UserRepositoryImpl) SaveNewUser(user *models.User) (*models.User, error
 	}
 
 	return user, nil
+}
+
+func (u *UserRepositoryImpl) GetUserByEmail(email string) (*models.User, error) {
+	var user models.User
+
+	result := u.DB.Where("email = ?", email).First(&user)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return &user, nil
 }

@@ -36,7 +36,8 @@ type DatabaseConfig struct {
 }
 
 type AuthConfig struct {
-	Cost uint8
+	Cost              uint8
+	SessionExpiration int
 }
 
 func GetConfig() *Config {
