@@ -8,10 +8,11 @@ import (
 )
 
 type Dependencies struct {
-	UserService  *services.UserServiceImpl
-	LoginService *services.LoginServiceImpl
-	Auth         *auth2.Auth
-	SessionStore *session.Store
+	UserService    *services.UserServiceImpl
+	LoginService   *services.LoginServiceImpl
+	UserRolService *services.UserRolServiceImpl
+	Auth           *auth2.Auth
+	SessionStore   *session.Store
 }
 
 func AddingHandlers(app *fiber.App, dependencies *Dependencies) error {
@@ -19,6 +20,7 @@ func AddingHandlers(app *fiber.App, dependencies *Dependencies) error {
 	setUsersGroupHandler(app, dependencies)
 	setHomeHandler(app, dependencies)
 	setLoginHandler(app, dependencies)
+	setLogoutHandler(app, dependencies)
 	return nil
 }
 
@@ -41,11 +43,19 @@ func setHomeHandler(app *fiber.App, dependencies *Dependencies) {
 
 func setLoginHandler(app *fiber.App, dependencies *Dependencies) {
 	loginHandler := LoginHandlerImpl{
-		LoginService: dependencies.LoginService,
-		SessionStore: dependencies.SessionStore,
+		LoginService:   dependencies.LoginService,
+		SessionStore:   dependencies.SessionStore,
+		UserRolService: dependencies.UserRolService,
 	}
 
 	loginRouteGroupHandler := app.Group("/login").Name("login:")
 	loginRouteGroupHandler.Get("/", loginHandler.loginGet).Name("get")
 	loginRouteGroupHandler.Post("/", loginHandler.loginPost).Name("post")
+}
+
+func setLogoutHandler(app *fiber.App, dependencies *Dependencies) {
+	logoutHandler := LogoutHandlerImpl{
+		SessionStore: dependencies.SessionStore,
+	}
+	app.Get("/logout", logoutHandler.logoutGet).Name("logout")
 }

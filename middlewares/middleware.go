@@ -31,7 +31,7 @@ func applyLogger(app *fiber.App) {
 
 func applySession(app *fiber.App, sessionStore *session.Store) {
 
-	urlListWithOutSession := []string{"/login", "/register", "/logout"}
+	urlListWithOutSession := []string{"/login"}
 
 	app.Use(func(c *fiber.Ctx) error {
 
@@ -52,6 +52,7 @@ func applySession(app *fiber.App, sessionStore *session.Store) {
 		}
 
 		if strings.Contains(url, "/public/") {
+			// TODO: Crear lógica de que si esta buscando la foto de un perfil el id debe ser el mismo que el de la sesión
 			return c.Next()
 		}
 

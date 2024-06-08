@@ -11,8 +11,9 @@ type LoginHandler interface {
 }
 
 type LoginHandlerImpl struct {
-	LoginService *services.LoginServiceImpl
-	SessionStore *session.Store
+	LoginService   *services.LoginServiceImpl
+	UserRolService *services.UserRolServiceImpl
+	SessionStore   *session.Store
 }
 
 func (h *LoginHandlerImpl) loginGet(c *fiber.Ctx) error {
@@ -46,8 +47,19 @@ func (h *LoginHandlerImpl) loginPost(c *fiber.Ctx) error {
 		})
 	}
 
+	userRol, err := h.UserRolService.GetUserRolByID(int(user.ID))
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+
+	}
+
 	userSession.Set("logged_in", true)
 	userSession.Set("user_id", user.ID)
+	userSession.Set("user_name", user.Name)
+	userSession.Set("user_rol", userRol.Rol.Name)
 
 	if err := userSession.Save(); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{

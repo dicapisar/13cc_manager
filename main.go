@@ -65,8 +65,13 @@ func startDependencies(config *config.Config) (*handlers.Dependencies, error) {
 		DB: db.DB,
 	}
 
+	userRolRepository := repository.UserRolRepositoryImpl{
+		DB: db.DB,
+	}
+
 	userService := services.UserServiceImpl{UserRepository: &userRepository}
 	loginService := services.LoginServiceImpl{UserRepository: &userRepository}
+	userRolService := services.UserRolServiceImpl{UserRolRepository: &userRolRepository}
 
 	auth := auth2.Auth{Config: &config.Auth, StorageSession: &config.StorageSession}
 
@@ -77,9 +82,10 @@ func startDependencies(config *config.Config) (*handlers.Dependencies, error) {
 	})
 
 	return &handlers.Dependencies{
-		UserService:  &userService,
-		LoginService: &loginService,
-		Auth:         &auth,
-		SessionStore: sessionStore,
+		UserService:    &userService,
+		LoginService:   &loginService,
+		Auth:           &auth,
+		SessionStore:   sessionStore,
+		UserRolService: &userRolService,
 	}, nil
 }

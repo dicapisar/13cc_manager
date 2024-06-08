@@ -18,12 +18,21 @@ func (h *HomeHandlerImpl) home(c *fiber.Ctx) error {
 
 	userSession, err := h.SessionStore.Get(c)
 
-	if !h.Auth.IsLoggedIn(userSession) || err != nil {
-		return c.Redirect("/login", 302)
+	if err != nil {
+		// TODO: CREAR HANDLER DE ERRORES 500 Y 400
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
 	}
 
+	userId := userSession.Get("user_id")
+	userName := userSession.Get("user_name")
+	userRol := userSession.Get("user_rol")
+
 	return c.Render("index", fiber.Map{
-		"Title": "Hello, World!",
+		"userId":   userId,
+		"userName": userName,
+		"userRol":  userRol,
 	}, "layouts/main")
 }
 
