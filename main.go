@@ -12,7 +12,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/template/handlebars/v2"
-	"time"
 )
 
 func main() {
@@ -35,7 +34,7 @@ func main() {
 	})
 
 	// Adding Middleware
-	middlewares.AddingMiddlewares(app)
+	middlewares.AddingMiddlewares(app, dependencies.SessionStore)
 
 	// Adding Static Directory
 	app.Static("/public", "./public").Name("static_files")
@@ -69,17 +68,18 @@ func startDependencies(config *config.Config) (*handlers.Dependencies, error) {
 	userService := services.UserServiceImpl{UserRepository: &userRepository}
 	loginService := services.LoginServiceImpl{UserRepository: &userRepository}
 
-	auth := auth2.Auth{Config: &config.Auth}
+	auth := auth2.Auth{Config: &config.Auth, StorageSession: &config.StorageSession}
 
-	store := session.New(session.Config{
-		Expiration:   time.Duration(config.Auth.SessionExpiration),
-		CookieSecure: true,
+	storage := auth.GenerateStorageSession()
+
+	sessionStore := session.New(session.Config{
+		Storage: storage,
 	})
 
 	return &handlers.Dependencies{
 		UserService:  &userService,
 		LoginService: &loginService,
 		Auth:         &auth,
-		SessionStore: store,
+		SessionStore: sessionStore,
 	}, nil
 }

@@ -6,10 +6,11 @@ import (
 )
 
 type Config struct {
-	App      AppConfig
-	Server   ServerConfig
-	Database DatabaseConfig
-	Auth     AuthConfig
+	App            AppConfig
+	Server         ServerConfig
+	Database       DatabaseConfig
+	Auth           AuthConfig
+	StorageSession StorageSessionConfig
 }
 
 type AppConfig struct {
@@ -38,6 +39,13 @@ type DatabaseConfig struct {
 type AuthConfig struct {
 	Cost              uint8
 	SessionExpiration int
+}
+
+type StorageSessionConfig struct {
+	Host     string
+	Port     int
+	Password string
+	Database int
 }
 
 func GetConfig() *Config {

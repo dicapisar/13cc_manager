@@ -9,6 +9,7 @@ import (
 )
 
 type Database interface {
+	NewDatabase(config *config.DatabaseConfig) (*DatabaseImpl, error)
 }
 
 type DatabaseImpl struct {
