@@ -21,6 +21,7 @@ func AddingHandlers(app *fiber.App, dependencies *Dependencies) error {
 	setHomeHandler(app, dependencies)
 	setLoginHandler(app, dependencies)
 	setLogoutHandler(app, dependencies)
+	setInventoryHandler(app, dependencies)
 	return nil
 }
 
@@ -28,6 +29,7 @@ func setUsersGroupHandler(app *fiber.App, dependencies *Dependencies) {
 	userHandler := UserHandlerImpl{
 		userService: dependencies.UserService,
 	}
+	// TODO: PONER RESTRICCIÓN DE SOLAMENTE ADMIN Y MANAGER
 	usersRouteGroupHandler := app.Group("/users").Name("users")
 	usersRouteGroupHandler.Post("/", userHandler.createNewUserHandler).Name("create_user")
 }
@@ -58,4 +60,13 @@ func setLogoutHandler(app *fiber.App, dependencies *Dependencies) {
 		SessionStore: dependencies.SessionStore,
 	}
 	app.Get("/logout", logoutHandler.logoutGet).Name("logout")
+}
+
+func setInventoryHandler(app *fiber.App, dependencies *Dependencies) {
+	inventoryHandler := InventoryHandlerImpl{
+		SessionStore: dependencies.SessionStore,
+	}
+	inventoryRouteGroupHandler := app.Group("/inventory").Name("inventory:")
+	inventoryRouteGroupHandler.Get("/items_type/new", inventoryHandler.ItemsTypeNewGet).Name("items_type_new")
+	inventoryRouteGroupHandler.Get("/items_type/list", inventoryHandler.ItemsTypeListGet).Name("items_type_list")
 }

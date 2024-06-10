@@ -22,10 +22,7 @@ func (h *LogoutHandlerImpl) logoutGet(c *fiber.Ctx) error {
 		})
 	}
 
-	userSession.Delete("logged_in")
-	userSession.Delete("user_id")
-
-	if err := userSession.Save(); err != nil {
+	if err := userSession.Destroy(); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})

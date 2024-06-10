@@ -2,6 +2,7 @@ package handlers
 
 import (
 	auth2 "github.com/dicapisar/13cc_manager/auth"
+	"github.com/dicapisar/13cc_manager/commos/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
 )
@@ -16,7 +17,7 @@ type HomeHandlerImpl struct {
 
 func (h *HomeHandlerImpl) home(c *fiber.Ctx) error {
 
-	userSession, err := h.SessionStore.Get(c)
+	userData, err := utils.GetUserDataFromSessionStorage(h.SessionStore, c)
 
 	if err != nil {
 		// TODO: CREAR HANDLER DE ERRORES 500 Y 400
@@ -25,15 +26,9 @@ func (h *HomeHandlerImpl) home(c *fiber.Ctx) error {
 		})
 	}
 
-	userId := userSession.Get("user_id")
-	userName := userSession.Get("user_name")
-	userRol := userSession.Get("user_rol")
+	userData["title"] = "Dashboard"
 
-	return c.Render("index", fiber.Map{
-		"userId":   userId,
-		"userName": userName,
-		"userRol":  userRol,
-	}, "layouts/main")
+	return c.Render("index", userData, "layouts/main")
 }
 
 func (h *HomeHandlerImpl) main(c *fiber.Ctx) error {
