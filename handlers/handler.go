@@ -8,11 +8,12 @@ import (
 )
 
 type Dependencies struct {
-	UserService    *services.UserServiceImpl
-	LoginService   *services.LoginServiceImpl
-	UserRolService *services.UserRolServiceImpl
-	Auth           *auth2.Auth
-	SessionStore   *session.Store
+	UserService     *services.UserServiceImpl
+	LoginService    *services.LoginServiceImpl
+	UserRolService  *services.UserRolServiceImpl
+	ItemTypeService *services.ItemTypeServiceImpl
+	Auth            *auth2.Auth
+	SessionStore    *session.Store
 }
 
 func AddingHandlers(app *fiber.App, dependencies *Dependencies) error {
@@ -64,9 +65,13 @@ func setLogoutHandler(app *fiber.App, dependencies *Dependencies) {
 
 func setInventoryHandler(app *fiber.App, dependencies *Dependencies) {
 	inventoryHandler := InventoryHandlerImpl{
-		SessionStore: dependencies.SessionStore,
+		SessionStore:    dependencies.SessionStore,
+		ItemTypeService: dependencies.ItemTypeService,
 	}
 	inventoryRouteGroupHandler := app.Group("/inventory").Name("inventory:")
 	inventoryRouteGroupHandler.Get("/items_type/new", inventoryHandler.ItemsTypeNewGet).Name("items_type_new")
+	inventoryRouteGroupHandler.Post("/items_type/new", inventoryHandler.ItemsTypeNewPost).Name("items_type_new_post")
 	inventoryRouteGroupHandler.Get("/items_type/list", inventoryHandler.ItemsTypeListGet).Name("items_type_list")
+	inventoryRouteGroupHandler.Get("/items_type/:id", inventoryHandler.ItemsTypeEditByIDGet).Name("items_type_edit_by_id")
+	inventoryRouteGroupHandler.Post("/items_type/:id", inventoryHandler.ItemsTypeEditByIDPost).Name("items_type_edit_by_id_post")
 }

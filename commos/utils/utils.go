@@ -15,10 +15,12 @@ func GetUserDataFromSessionStorage(sessionStore *session.Store, c *fiber.Ctx) (f
 	userId := userSession.Get("user_id")
 	userName := userSession.Get("user_name")
 	userRol := userSession.Get("user_rol")
+	userLoggedIn := userSession.Get("logged_in")
 
 	return fiber.Map{
 		"userId":   userId,
 		"userName": userName,
 		"userRol":  userRol,
+		"loggedIn": userLoggedIn,
 	}, nil
 }

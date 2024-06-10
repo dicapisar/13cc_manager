@@ -43,5 +43,6 @@ func autoMigrate(db *gorm.DB) error {
 		&models.Rol{},
 		&models.User{},
 		&models.UserRol{},
+		&models.ItemType{},
 	)
 }

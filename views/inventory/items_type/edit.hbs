@@ -1,25 +1,27 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">New Item Type</h5>
+            <h5 class="mb-0">Item Type</h5>
         </div>
         <div class="card-body">
-            <form id="newItemType" method="post" action="/inventory/items_type/new">
+            <form id="newItemType" method="post" action="/inventory/items_type/{{itemType.id}}">
                 <div class="mb-3">
                     <label class="form-label" for="basic-icon-default-fullname">Name</label>
                     <div class="input-group input-group-merge">
                         <span id="basic-icon-default-fullname2" class="input-group-text"><i class="bx bxs-category-alt"></i></span>
-                        <input type="text" class="form-control" autofocus id="name" name="name" placeholder="Vacuum cleaner, Mop, Broom..." aria-label="Vacuum cleaner, Mop, Broom...">
+                        <input type="text" class="form-control" autofocus id="name" name="name"
+                               value="{{itemType.name}}" placeholder="Vacuum cleaner, Mop, Broom..." aria-label="Vacuum cleaner, Mop, Broom...">
                     </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="basic-icon-default-message">Description</label>
                     <div class="input-group input-group-merge">
                         <span id="basic-icon-default-message2" class="input-group-text"><i class="bx bx-comment"></i></span>
-                        <textarea id="description" name="description" class="form-control" placeholder="Short description about de item type" aria-label="Short description about de item type" ></textarea>
+                        <textarea id="description" name="description" class="form-control"
+                                  placeholder="Short description about de item type" aria-label="Short description about de item type" >{{itemType.description}}</textarea>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary">Edit</button>
             </form>
         </div>
     </div>

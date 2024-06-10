@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/dicapisar/13cc_manager/commos/utils"
 	"github.com/dicapisar/13cc_manager/dtos/request"
 	"github.com/dicapisar/13cc_manager/services"
 	"github.com/gofiber/fiber/v2"
@@ -17,6 +18,19 @@ type LoginHandlerImpl struct {
 }
 
 func (h *LoginHandlerImpl) loginGet(c *fiber.Ctx) error {
+
+	userData, err := utils.GetUserDataFromSessionStorage(h.SessionStore, c)
+
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	if userData["loggedIn"] != nil && userData["loggedIn"].(bool) {
+		return c.Redirect("/home")
+	}
+
 	return c.Render("login", fiber.Map{})
 }
 
